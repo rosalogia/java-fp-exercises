@@ -209,7 +209,7 @@ System.out.println(LinkedList.toString(list));
 ## Project Structure and Testing
 
 The project code lives in the `app/src/main/java/fpe` directory. You will implement the combinators described above
-as static methods in the `LinkedList` class. A class called `App` exists so that you may experiment with your
+as methods on the `LinkedList` class. A class called `App` exists so that you may experiment with your
 code and test it as you please. You can compile and run the code in the main method of `App` using the command
 `./gradlew --console plain run` on Linux and Mac operating systems, and `.\gradlew --console plain run` on Windows.
 
@@ -219,14 +219,3 @@ run them using `./gradlew test` or `.\gradlew test` depending on whether you're 
 You are encouraged to view the unit tests in `app/src/test/java/fpe/CombinatorTests.java`. They give good examples
 of how to use the lambda syntax to test your combinators as you write them. You may copy that code into your main method
 to experiment.
-
-# Notes on Notation and Naming Conventions
-
-Naming conventions and notations you may be unfamiliar with are used throughout this exercise and project. The reason
-for this is to introduce you to notation and conventions that are common in functional programming. You do not have to
-embrace them, but it is worth becoming familiar with them. For example, you may be used to working with linked lists
-via a `Node` class that contains some data with a reference to the next node in the list. In functional programming,
-this implementation detail is not often expressed explicitly. Instead, we consider a `Node` a linked list in its own
-right, and say that every linked list is either empty (i.e. null) or contains a "head" (some value) and a "tail"
-(which is another linked list). Implementation wise, there is no difference between our LinkedList class and
-your `Node` class, but this is more common in functional programming contexts.
