@@ -38,27 +38,40 @@ public class LinkedList<T> {
     }
 
     public static <T, U> LinkedList<U> map(Function<T, U> f, LinkedList<T> l) {
-        return null;
+        if (l == null) return null;
+        return prepend(f.apply(l.head), map(f, l.tail));
     }
 
     public static <T> LinkedList<T> filter(Function<T, Boolean> pred, LinkedList<T> l) {
-        return null;
+        if (l == null) return null;
+        if (pred.apply(l.head)) {
+            return prepend(l.head, filter(pred, l.tail));
+        } else {
+            return filter(pred, l.tail);
+        }
     }
 
     public static <T> T reduce(CombiningFunction<T, T, T> fn, LinkedList<T> l) {
-        return null;
+        if (l == null) return null;
+        if (l.tail == null) return l.head;
+        return fn.combine(l.head, reduce(fn, l.tail));
     }
 
     public static <T> Boolean any(Function<T, Boolean> pred, LinkedList<T> l) {
-        return null;
+        if (l == null) return false;
+        if (pred.apply(l.head)) return true;
+        return any(pred, l.tail);
     }
 
     public static <T> Boolean all(Function<T, Boolean> pred, LinkedList<T> l) {
-        return null;
+        if (l == null) return true;
+        if (!pred.apply(l.head)) return false;
+        return all(pred, l.tail);
     }
 
     public static <T, U, V> LinkedList<V> zipWith(CombiningFunction<T, U, V> fn, LinkedList<T> l1, LinkedList<U> l2) {
-        return null;
+        if (l1 == null || l2 == null) return null;
+        return prepend(fn.combine(l1.head, l2.head), zipWith(fn, l1.tail, l2.tail));
     }
 
     // Optional Functions and Combinators

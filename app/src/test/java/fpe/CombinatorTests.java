@@ -25,7 +25,7 @@ public class CombinatorTests {
     void testReduce() {
         var sum = LinkedList.reduce((x, y) -> x + y, numbers);
 
-        Assertions.assertThat(sum).isEqualTo(10);
+        Assertions.assertThat(sum).isEqualTo(15);
     }
 
     @Test
