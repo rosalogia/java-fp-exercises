@@ -4,6 +4,12 @@ In many functional programming languages, there exist a large library of pre-def
 on linked lists in a way that is flexible and declarative. It is possible to implement some of these functions in Java,
 and doing so can be a good practice in recursion and working with linked lists, but will also grow your perspective a bit.
 
+### Table of Contents
+* [Higher Order Functions, Combinators, and Lambda Expressions](#higher-order-functions-combinators-and-lambda-expressions)
+* [Higher Order Functions and Lambdas in Java](#higher-order-functions-and-lambdas-in-java)
+* [Your Task](#your-task)
+* [Project Structure and Testing](#project-structure-and-testing)
+
 ## Higher Order Functions, Combinators, and Lambda Expressions
 
 A higher order function is a function that _takes a function as input_ or _returns a function as output_. What could the
