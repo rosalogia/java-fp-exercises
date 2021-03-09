@@ -9,7 +9,6 @@ and doing so can be a good practice in recursion and working with linked lists, 
 * [Higher Order Functions and Lambdas in Java](#higher-order-functions-and-lambdas-in-java)
 * [Your Task](#your-task)
 * [Project Structure and Testing](#project-structure-and-testing)
-* [Notes on Notation and Naming Conventions](#notes-on-notation-and-naming-conventions)
 
 ## Higher Order Functions, Combinators, and Lambda Expressions
 
