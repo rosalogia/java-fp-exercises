@@ -4,6 +4,10 @@ In many functional programming languages, there exist a large library of pre-def
 on linked lists in a way that is flexible and declarative. It is possible to implement some of these functions in Java,
 and doing so can be a good practice in recursion and working with linked lists, but will also grow your perspective a bit.
 
+If you already know about higher-order functions, combinators, and lambda expressions, you may jump directly to the
+task. If these are new to you, information about them is provided below. Reading it and considering it carefully
+will help make the exercise more approachable, even if this is your first time encountering these ideas.
+
 ### Table of Contents
 * [Higher Order Functions, Combinators, and Lambda Expressions](#higher-order-functions-combinators-and-lambda-expressions)
 * [Higher Order Functions and Lambdas in Java](#higher-order-functions-and-lambdas-in-java)
@@ -27,14 +31,21 @@ squares = list(map(square, numbers))
 ```
 
 The `map` function is a _list combinator_. It is a "higher order function" because it takes a function (in this case
-`square`) as input. It is a _combinator_ because its sole purpose is combining its input in an interesting and meaningful
-way. The purpose of `map` is to take a list of "things", lets say they have the generic type `a`, and a function that
+`square`) as input. It is a _combinator_ because it is part of a larger set of primitive higher-order list functions
+that exist to be combined fluently and declaratively to produce complex pipelines of data transformation. The purpose
+of `map` is to take a list of "things", lets say they have the generic type `a`, and a function that
 transforms a single "thing" of type `a` to a "thing" of type `b` (where `a` and `b` may or may not be the same), and
 return a list of "things" of type `b`.
 
 In the notation that is common in functional programming, we say that the generic
 type signature of this function (assuming that the function from `a` to `b` comes _before_ the list of `a`s) is
-`(a -> b) -> [a] -> [b]`. Note that in this type signature, right-pointing arrows separate the types of parameters and
+`(a -> b) -> [a] -> [b]`:
+
+* `(a -> b)` is a function with an input of type `a` and an output of type `b`, i.e. a function from `a` to `b`
+* `[a]` is a list of elements of type `a`
+* `[b]` is a list of elements of type `b`. This is the output type.
+
+Note that in this type signature, right-pointing arrows separate the types of parameters and
 outputs. If read expressively, this might be pronounced: "Take a function from `a` to `b` and a list of `a`s, and return a
 list of `b`s." You may notice that the `->` symbol does not differentiate between inputs and outputs. This is intentional,
 and has a good purpose which we won't explore right now, though admittedly it is confusing in our case.
@@ -80,9 +91,10 @@ and makes using higher order functions unpleasant. If we had to explicitly defin
 we wanted to use higher order functions, much of their utility and elegance would be lost. Lambda expressions provide
 a solution by allowing us to directly pass the body of a short function to a higher order function rather than passing
 the name of a function defined earlier. Consider the following analogy: explicitly defined and named variables are to
-literal values as explicitly defined and named functions are to lambda expressions. Imagine how annoying it would be
-if every time you wanted to pass a value like `1` or `"hello"` to a function, you were forced to store it in
-a variable before-hand and give it a name, then pass the variable to your function.
+literal values as explicitly defined and named functions are to lambda expressions. It would be quite annoying 
+if every time we wanted to pass a value like `1` or `"hello"` to a function, we were forced to store it in
+a variable before-hand and give it a name, then pass the variable to our function. Similarly, lambdas help avoid
+unnecessary formalisms and naming of things when working with higher-order functions.
 
 ## Higher Order Functions and Lambdas in Java
 
@@ -94,12 +106,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        ArrayList<Integer> numbers = new ArrayList<Integer>();
-        numbers.add(1);
-        numbers.add(3);
-        numbers.add(5);
-        
-        numbers.forEach( (x) -> { System.out.println(x + 1); } );
+        ArrayList<Integer> numbers = new ArrayList<Integer>(1, 3, 5);
+        numbers.forEach(x -> System.out.println(x + 1));
     }
 }
 ```
@@ -117,40 +125,38 @@ import java.util.function.*;
 
 public class LambdaExample {
     private static ArrayList<String> stringify(Function<Integer, String> fn, ArrayList<Integer> al) {
-        ArrayList<String> strings = new ArrayList<String>();
-        for (Integer i : al) {
-            strings.add(fn.apply(i));
-        }
+        ArrayList<String> strings = new ArrayList<>();
+        
+        // Add the result of applying fn to each integer in al to strings with .forEach
+        al.forEach(i -> strings.add(fn.apply(i)));
 
         return strings;
     }
 
     public static void main(String[] args) {
-        ArrayList<Integer> numbers = new ArrayList<Integer>();
-        numbers.add(1);
-        numbers.add(2);
-        numbers.add(3);
-        ArrayList<String> strings = stringify( (x) -> Integer.toString(x), numbers);
-
-        for (String s : strings) {
-            System.out.println(s);
-        }
+        ArrayList<Integer> numbers = new ArrayList<Integer>(1, 2, 3, 4, 5);
+        // Will contain "Number 1", "Number 2", etc.
+        ArrayList<String> strings = stringify(x -> "Number " + x, numbers);
+        strings.forEach(s -> System.out.println(s));
     }
 }
 ```
 
 The parameter type `Function<Integer, String>` specifies that `fn` should be a function that takes an `Integer` and returns
-a `String`. We apply `fn` to an `Integer` with `fn.apply`.
+a `String`. We apply `fn` to an `Integer` by passing the value to `fn.apply`.
 
 ## Your Task
 
 In this exercise, you will use the above information and your knowledge of linked lists and recursion to implement
 a set of linked list combinators, much like those which are typically available in functional programming languages.
 
+Note: While doing these exercises, do not modify anything in place; assume everything is **immutable**.
+
 A brief list of the combinators you will define along with their (functional) type signatures, descriptions, and
 examples in a made up syntax is given here:
 
-Note: While doing these exercises, do not modify anything in place; assume everything is **immutable**.
+<details>
+<summary>Click to view the list of combinators you are to implement</summary>
 
 * `map :: (a -> b) -> [a] -> [b]`
     - Applies a function on every element of a list to produce a new list.
@@ -172,8 +178,26 @@ Note: While doing these exercises, do not modify anything in place; assume every
 * `zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]`
     - Applies a combining function to two lists pair-wise to produce a new list. If the two lists are of different sizes, extraneous elements are ignored.
     - Example: `zipWith (x, y -> x + y) [1, 2, 3] [4, 5, 6]` should return `[5, 7, 9]`
+</details>
 
-Some extra list combinators/functions to try implementing for your entertainment:
+In the exercise template, these methods are non-static, but they **do not mutate the object on which they are called**.
+Instead, they return new linked lists (if that is their purpose). This has important consequences to how they can be
+used together. Consider the following example, which should work once you've finished:
+
+```java
+LinkedList<Integer> numbers = new LinkedList<>(1, 2, 3, 4, 5);
+LinkedList<Integer> newNumbers =
+      numbers.zipWith((x, y) -> x + y, numbers) // combine numbers with itself by summing pairwise
+              .map(x -> x * x) // square the pairwise sums
+              .filter(x % 2 == 0) // remove non-even elements
+              .reduce((x, y) -> x + y); // sum up the remaining elements
+```
+
+As mentioned earlier, these functions are _combinators_ because they're meant to be interestingly combined with
+one another, providing a simple interface for producing complex behaviour.
+
+<details>
+<summary>Some extra list combinators/functions to try implementing for your entertainment:</summary>
 
 * `scan :: (a -> a -> a) -> [a] -> [a]`
     - Like `reduce`, but instead of reducing to a single value, each element of the produced list is the progressive result of reduction
@@ -190,19 +214,26 @@ Some extra list combinators/functions to try implementing for your entertainment
 * `dropWhile :: (a -> bool) -> [a] -> [a]`
     - `takeWhile` but the other way around
     - Example: `dropWhile (x -> x % 2 == 0) [2, 4, 6, 7, 8]` should return `[7, 8]`
+</details>
 
-For your convenience, a generic linked list class has been provided along with some convenience methods. Here
+For your convenience, a generic linked list class has been implemented along with some convenience methods. Here
 are some of the important ones:
 
 ```java
 // Initialize with variable number of inputs
 LinkedList<Integer> list = new LinkedList<Integer>(1, 2, 3, 4, 5);
 
-// Prepend to an existing list
-list = LinkedList.prepend(0, list);
+// Prepend to an existing list; this does NOT mutate the original list, it returns a new one
+list = list.prepend(0);
 
-// Print lists in the following format: 1 -> 2 -> 3 -> 4
-System.out.println(LinkedList.toString(list));
+// Print lists in the following format: 1 -> 2 -> 3 -> 4 -> 5
+System.out.println(list.toString());
+
+// Get the first element in the list with the head method
+System.out.println(list.head());
+
+// Get every element in the list except the head with the tail method
+System.out.println(list.tail().toString())
 ```
 
 ## Project Structure and Testing

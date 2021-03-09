@@ -3,7 +3,7 @@ package fpe;
 import java.util.function.Function;
 
 public class LinkedList<T> {
-    private Node<T> contents;
+    private final Node<T> contents;
 
     private static class Node<T> {
         public T head;
@@ -44,24 +44,20 @@ public class LinkedList<T> {
 
     public LinkedList<T> tail() {
         if (this.contents == null) return null;
+        if (this.contents.tail == null) return null;
         return new LinkedList<>(this.contents.tail);
     }
 
-
-    public LinkedList<T> prepend(T newHead, LinkedList<T> tail) {
+    public LinkedList<T> prepend(T newHead) {
         Node<T> nh = new Node<>();
         nh.head = newHead;
-        nh.tail = this.contents.tail;
+        nh.tail = this.contents;
         return new LinkedList<>(nh);
     }
 
-    public Boolean isNull() {
-        return this.contents == null;
-    }
-
-    public static <T> String toString(LinkedList<T> l) {
-        if (l.tail().isNull()) return l.head().toString();
-        return l.head().toString() + " -> " + toString(l.tail());
+    public String toString() {
+        if (this.tail() == null) return this.head().toString();
+        return this.head().toString() + " -> " + this.tail().toString();
     }
 
     public <U> LinkedList<U> map(Function<T, U> f) {
