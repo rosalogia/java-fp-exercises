@@ -180,9 +180,10 @@ examples in a made up syntax is given here:
     - Example: `zipWith (x, y -> x + y) [1, 2, 3] [4, 5, 6]` should return `[5, 7, 9]`
 </details>
 
-In the exercise template, these methods are non-static, but they **do not mutate the object on which they are called**.
-Instead, they return new linked lists (if that is their purpose). This has important consequences to how they can be
-used together. Consider the following example, which should work once you've finished:
+In the exercise template, these methods are implemented statically and come with non-static wrappers. They
+**do not mutate the object on which they are called**. Instead, they return new linked lists (if that is
+their purpose). This has important consequences for how they can be used together. Consider the following
+example, which should work once you've finished:
 
 ```java
 LinkedList<Integer> numbers = new LinkedList<>(1, 2, 3, 4, 5);
@@ -216,17 +217,32 @@ one another, providing a simple interface for producing complex behaviour.
     - Example: `dropWhile (x -> x % 2 == 0) [2, 4, 6, 7, 8]` should return `[7, 8]`
 </details>
 
-For your convenience, a generic linked list class has been implemented along with some convenience methods. Here
-are some of the important ones:
+
+
+## Project Structure and Testing
+
+The purpose of these exercises is not designing and implementing a robust linked list class,
+and so this has been done for you. The `LinkedList<T>` class implemented in this project is
+documented so that you do not have to make sense of it independently. The documentation
+can be viewed by accessing the `doc/fpe/package-summary.html` file in your web browser and
+navigating the package from there. Reading the documentation comments alongside the code it
+documents will also be helpful.
+
+The scope of the exercise is confined solely to the list of private static methods which
+currently only return `null` in the `LinkedList<T>` class. Any other methods, fields, etc.
+have been fully set up and implemented for you, including the public wrapper methods which
+share their names with the static methods you will be implementing.
+
+The `LinkedList<T>` class has some convenience methods that you may use while testing your code,
+as well as some that may come in handy while implementing your solutions. Examples of how they
+are used are given here, but fuller documentation is always available in the location specified
+above.
 
 ```java
 // Initialize with variable number of inputs
 LinkedList<Integer> list = new LinkedList<Integer>(1, 2, 3, 4, 5);
 
-// Prepend to an existing list; this does NOT mutate the original list, it returns a new one
-list = list.prepend(0);
-
-// Print lists in the following format: 1 -> 2 -> 3 -> 4 -> 5
+// Print lists in the following format: [1, 2, 3, 4, 5]
 System.out.println(list.toString());
 
 // Get the first element in the list with the head method
@@ -234,14 +250,15 @@ System.out.println(list.head());
 
 // Get every element in the list except the head with the tail method
 System.out.println(list.tail().toString())
+
+// Prepend to an immutable Node<T> (useful in implementing solutions)
+Node<Integer> someNodes = new Node<Integer>(1, 2, 3);
+Node<Integer> moreNodes = LinkedList.prepend(4, someNodes);
 ```
 
-## Project Structure and Testing
-
-The project code lives in the `app/src/main/java/fpe` directory. You will implement the combinators described above
-as methods on the `LinkedList` class. A class called `App` exists so that you may experiment with your
-code and test it as you please. You can compile and run the code in the main method of `App` using the command
-`./gradlew --console plain run` on Linux and Mac operating systems, and `.\gradlew --console plain run` on Windows.
+The project code lives in the `app/src/main/java/fpe` directory. A class called `App` exists so that you may
+experiment with your code and test it as you please. You can compile and run the code in the main method of
+`App` using the command `./gradlew run` on Linux and Mac operating systems, and `.\gradlew run` on Windows.
 
 This project comes with a few JUnit tests so that you may confirm that your solutions work as intended. You can
 run them using `./gradlew test` or `.\gradlew test` depending on whether you're running Linux/Mac or Windows respectively.

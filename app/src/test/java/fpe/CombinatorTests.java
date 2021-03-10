@@ -11,14 +11,14 @@ public class CombinatorTests {
     void testMap() {
         var mapResult = numbers.map(x -> x * x);
         Assertions.assertThat(mapResult).isNotNull();
-        Assertions.assertThat(mapResult.toString()).isEqualTo("1 -> 4 -> 9 -> 16 -> 25");
+        Assertions.assertThat(mapResult.toString()).isEqualTo("[1, 4, 9, 16, 25]");
     }
 
     @Test
     void testFilter() {
         var filterResults = numbers.filter(x -> x % 2 == 0);
         Assertions.assertThat(filterResults).isNotNull();
-        Assertions.assertThat(filterResults.toString()).isEqualTo("2 -> 4");
+        Assertions.assertThat(filterResults.toString()).isEqualTo("[2, 4]");
     }
 
     @Test
@@ -43,6 +43,6 @@ public class CombinatorTests {
     void testZipWith() {
         var zipWithResult = numbers.zipWith((x, y) -> x * y, numbers);
         Assertions.assertThat(zipWithResult).isNotNull();
-        Assertions.assertThat(zipWithResult.toString()).isEqualTo("1 -> 4 -> 9 -> 16 -> 25");
+        Assertions.assertThat(zipWithResult.toString()).isEqualTo("[1, 4, 9, 16, 25]");
     }
 }
