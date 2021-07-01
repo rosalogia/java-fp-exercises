@@ -190,7 +190,7 @@ LinkedList<Integer> numbers = new LinkedList<>(1, 2, 3, 4, 5);
 LinkedList<Integer> newNumbers =
       numbers.zipWith((x, y) -> x + y, numbers) // combine numbers with itself by summing pairwise
               .map(x -> x * x) // square the pairwise sums
-              .filter(x % 2 == 0) // remove non-even elements
+              .filter(x -> x % 2 == 0) // remove non-even elements
               .reduce((x, y) -> x + y); // sum up the remaining elements
 ```
 
